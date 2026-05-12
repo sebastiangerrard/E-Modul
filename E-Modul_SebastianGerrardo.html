@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>San Keuw Jong – E-Modul IPAS SD – Sebastian Gerrardo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C0392B; --red-light: #FADBD8; --red-dark: #922B21;
+    --gold: #D4AC0D; --gold-light: #FEF9E7; --gold-mid: #F9E79F;
+    --green: #1E8449; --green-light: #D5F5E3; --green-dark: #145A32;
+    --blue: #1A5276; --blue-light: #D6EAF8;
+    --orange: #D35400; --orange-light: #FDEBD0;
+    --purple: #6C3483; --purple-light: #E8DAEF;
+    --cream: #FEF9F0; --warm-white: #FFFDF7;
+    --text-dark: #2C3E50; --text-mid: #566573; --text-light: #AAB7B8;
+    --border: #E8DCC8; --shadow: rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+  img { max-width: 100%; height: auto; display: block; }
+  iframe { max-width: 100%; }
+
+  /* NAVIGATION */
+  .nav-bar { background: var(--red-dark); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .nav-title { color: #fff; font-family: 'Fredoka One', cursive; font-size: 18px; letter-spacing: 0.5px; }
+  .nav-btns { display: flex; gap: 8px; align-items: center; }
+  .nav-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; transition: background 0.2s; }
+  .nav-btn:hover { background: rgba(255,255,255,0.3); }
+  .nav-btn:disabled { opacity: 0.4; cursor: default; }
+  .page-indicator { color: #FFD700; font-weight: 800; font-size: 13px; min-width: 70px; text-align: center; }
+
+  /* TOC BUTTON */
+  .toc-btn { background: var(--gold); border: none; color: var(--red-dark); padding: 6px 12px; border-radius: 20px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; }
+
+  /* PAGE WRAPPER */
+  .page { display: none; min-height: calc(100vh - 52px); }
+  .page.active { display: block; }
+
+  /* ===== COVER ===== */
+  .cover { background: linear-gradient(160deg, #8B0000 0%, #C0392B 40%, #922B21 70%, #641E16 100%); min-height: calc(100vh - 52px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; top: -60px; right: -60px; width: 250px; height: 250px; background: rgba(255,215,0,0.08); border-radius: 50%; }
+  .cover::after { content: ''; position: absolute; bottom: -80px; left: -60px; width: 300px; height: 300px; background: rgba(255,215,0,0.06); border-radius: 50%; }
+  .cover-lanterns { display: flex; gap: 30px; margin-bottom: 30px; }
+  .lantern { width: 50px; height: 70px; background: var(--gold); border-radius: 10px 10px 15px 15px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 0 20px rgba(255,215,0,0.4); }
+  .lantern::before { content: ''; position: absolute; top: -12px; width: 20px; height: 12px; background: #8B0000; border-radius: 3px; }
+  .lantern::after { content: ''; position: absolute; bottom: -15px; width: 4px; height: 15px; background: var(--gold); }
+  .cover-badge { background: var(--gold); color: var(--red-dark); font-size: 12px; font-weight: 800; padding: 5px 16px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; }
+  .cover-title { font-family: 'Fredoka One', cursive; color: #FFD700; font-size: 52px; text-align: center; line-height: 1.1; text-shadow: 3px 3px 0px rgba(0,0,0,0.3); margin-bottom: 12px; }
+  .cover-subtitle { color: rgba(255,255,255,0.9); font-size: 18px; text-align: center; font-weight: 600; margin-bottom: 8px; }
+  .cover-info { color: rgba(255,220,150,0.9); font-size: 14px; text-align: center; margin-bottom: 30px; }
+  .cover-deco { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }
+  .cover-deco-line { width: 60px; height: 2px; background: rgba(255,215,0,0.5); }
+  .cover-deco-star { color: #FFD700; font-size: 20px; }
+  .cover-mapel { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.4); color: #FFD700; padding: 10px 25px; border-radius: 12px; text-align: center; }
+  .cover-mapel .mapel-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+  .cover-mapel .mapel-val { font-family: 'Fredoka One', cursive; font-size: 18px; }
+  .start-btn { margin-top: 25px; background: #FFD700; color: var(--red-dark); border: none; padding: 14px 40px; border-radius: 30px; font-family: 'Fredoka One', cursive; font-size: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s; }
+  .start-btn:hover { transform: translateY(-3px); box-shadow: 0 7px 20px rgba(0,0,0,0.3); }
+
+  /* ===== CONTENT PAGES ===== */
+  .content-page { max-width: 820px; margin: 0 auto; padding: 30px 20px 50px; }
+  .chapter-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid var(--border); }
+  .chapter-number { background: var(--red); color: #fff; font-family: 'Fredoka One', cursive; font-size: 28px; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 3px 3px 0 var(--red-dark); }
+  .chapter-info .label { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .chapter-info h2 { font-family: 'Fredoka One', cursive; font-size: 28px; color: var(--red-dark); line-height: 1.2; }
+  .chapter-info .tagline { font-size: 13px; color: var(--text-mid); font-weight: 600; margin-top: 2px; }
+
+  /* TEXT CONTENT */
+  .prose { font-size: 15px; line-height: 1.85; color: var(--text-dark); }
+  .prose p { margin-bottom: 14px; }
+  .prose strong { color: var(--red-dark); font-weight: 800; }
+
+  /* INFO BOX */
+  .info-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 10px 10px 0; padding: 14px 16px; margin: 16px 0; }
+  .info-box .box-title { font-weight: 800; color: var(--blue); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+  .info-box p { font-size: 14px; margin: 0; color: var(--text-dark); line-height: 1.7; }
+  .fact-box { background: var(--gold-light); border: 2px dashed var(--gold); border-radius: 12px; padding: 14px 16px; margin: 16px 0; }
+  .fact-box .box-title { font-weight: 800; color: #9A7D0A; font-size: 13px; margin-bottom: 5px; }
+  .fact-box p { font-size: 14px; margin: 0; color: var(--text-dark); }
+  .green-box { background: var(--green-light); border-left: 4px solid var(--green); border-radius: 0 10px 10px 0; padding: 14px 16px; margin: 16px 0; }
+  .green-box .box-title { font-weight: 800; color: var(--green-dark); font-size: 13px; margin-bottom: 5px; }
+  .green-box p { font-size: 14px; margin: 0; }
+
+  /* CARDS GRID */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+  .card { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 2px 8px var(--shadow); }
+  .card .card-icon { font-size: 32px; margin-bottom: 10px; }
+  .card .card-title { font-family: 'Fredoka One', cursive; color: var(--red-dark); font-size: 17px; margin-bottom: 6px; }
+  .card .card-text { font-size: 13px; line-height: 1.6; color: var(--text-mid); }
+  .card.green { border-color: var(--green); }
+  .card.gold { border-color: var(--gold); }
+  .card.blue { border-color: var(--blue); }
+  .card.purple { border-color: var(--purple); }
+
+  /* PHOTO PLACEHOLDER */
+  .photo-placeholder { border: 2px dashed #BDC3C7; border-radius: 12px; background: #F8F9FA; padding: 30px 20px; text-align: center; margin: 16px 0; }
+  .photo-placeholder .ph-label { color: #7F8C8D; font-size: 13px; font-weight: 700; margin-top: 8px; }
+  .photo-placeholder .ph-hint { color: #AAB7B8; font-size: 11px; margin-top: 4px; }
+  .photo-placeholder .ph-icon { font-size: 36px; }
+  .photo-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 16px 0; }
+
+  /* STEPS */
+  .steps { margin: 16px 0; }
+  .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .step-num { background: var(--red); color: #fff; font-family: 'Fredoka One', cursive; font-size: 16px; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step-content .step-title { font-weight: 800; color: var(--red-dark); font-size: 14px; }
+  .step-content p { font-size: 13px; color: var(--text-mid); margin-top: 3px; line-height: 1.6; }
+
+  /* FOOD CARDS */
+  .food-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .food-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 3px 12px var(--shadow); border: 1.5px solid var(--border); }
+  .food-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+  .food-img.c1 { background: var(--orange-light); }
+  .food-img.c2 { background: var(--gold-light); }
+  .food-img.c3 { background: var(--blue-light); }
+  .food-img.c4 { background: var(--green-light); }
+  .food-body { padding: 14px; }
+  .food-name { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--red-dark); }
+  .food-origin { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin: 3px 0 8px; }
+  .food-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+  /* PAKAIAN */
+  .pakaian-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .pakaian-card { border-radius: 14px; overflow: hidden; box-shadow: 0 3px 12px var(--shadow); text-align: center; }
+  .pakaian-img { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 52px; }
+  .pk1 .pakaian-img { background: #FDEDEC; }
+  .pk2 .pakaian-img { background: #FEF9E7; }
+  .pk3 .pakaian-img { background: #EAFAF1; }
+  .pakaian-body { padding: 12px 10px; background: #fff; border: 1.5px solid var(--border); border-top: none; border-radius: 0 0 14px 14px; }
+  .pakaian-etnis { font-family: 'Fredoka One', cursive; font-size: 15px; }
+  .pk1 .pakaian-etnis { color: var(--red); }
+  .pk2 .pakaian-etnis { color: var(--gold); }
+  .pk3 .pakaian-etnis { color: var(--green); }
+  .pakaian-detail { font-size: 12px; color: var(--text-mid); line-height: 1.5; margin-top: 5px; }
+
+  /* KD BOX */
+  .kd-box { background: var(--red-light); border-radius: 12px; padding: 15px 18px; margin-bottom: 20px; border: 1px solid #F1948A; }
+  .kd-box .kd-label { font-size: 11px; color: var(--red-dark); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+  .kd-box .kd-text { font-size: 13px; color: var(--text-dark); margin-top: 4px; line-height: 1.6; }
+
+  /* ===== TOC ===== */
+  .toc-page { padding: 30px 20px; max-width: 700px; margin: 0 auto; }
+  .toc-header { font-family: 'Fredoka One', cursive; font-size: 30px; color: var(--red-dark); margin-bottom: 6px; }
+  .toc-sub { color: var(--text-mid); font-size: 14px; margin-bottom: 25px; }
+  .toc-list { list-style: none; }
+  .toc-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; cursor: pointer; transition: background 0.15s; margin-bottom: 6px; border: 1.5px solid transparent; }
+  .toc-item:hover { background: var(--red-light); border-color: #F1948A; }
+  .toc-icon { font-size: 24px; width: 40px; text-align: center; }
+  .toc-info .toc-num { font-size: 11px; color: var(--text-light); font-weight: 700; text-transform: uppercase; }
+  .toc-info .toc-name { font-family: 'Fredoka One', cursive; color: var(--text-dark); font-size: 17px; }
+  .toc-info .toc-desc { font-size: 12px; color: var(--text-mid); }
+  .toc-arrow { margin-left: auto; color: var(--red); font-size: 18px; font-weight: 900; }
+
+  /* ===== QUIZ ===== */
+  .quiz-container { max-width: 700px; margin: 0 auto; padding: 20px; }
+  .quiz-intro { background: linear-gradient(135deg, var(--red-dark), var(--red)); border-radius: 16px; padding: 25px; color: #fff; text-align: center; margin-bottom: 25px; }
+  .quiz-intro h3 { font-family: 'Fredoka One', cursive; font-size: 26px; color: #FFD700; margin-bottom: 8px; }
+  .quiz-intro p { font-size: 14px; opacity: 0.9; }
+  .quiz-score-bar { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 12px; }
+  .score-box { background: rgba(255,255,255,0.2); border-radius: 10px; padding: 8px 20px; }
+  .score-box .s-label { font-size: 11px; opacity: 0.8; }
+  .score-box .s-val { font-family: 'Fredoka One', cursive; font-size: 24px; color: #FFD700; }
+
+  .question-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px var(--shadow); border: 1.5px solid var(--border); margin-bottom: 16px; transition: all 0.2s; }
+  .q-number { font-size: 11px; color: var(--text-light); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .q-text { font-weight: 700; font-size: 15px; color: var(--text-dark); margin-bottom: 14px; line-height: 1.5; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .opt-btn { background: var(--cream); border: 2px solid var(--border); border-radius: 10px; padding: 10px 14px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-dark); text-align: left; transition: all 0.15s; line-height: 1.4; }
+  .opt-btn:hover { background: var(--red-light); border-color: var(--red); }
+  .opt-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green-dark); font-weight: 800; }
+  .opt-btn.wrong { background: var(--red-light); border-color: var(--red); color: var(--red-dark); text-decoration: line-through; }
+  .opt-btn:disabled { cursor: default; }
+  .q-feedback { margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; display: none; }
+  .q-feedback.show { display: block; }
+  .q-feedback.ok { background: var(--green-light); color: var(--green-dark); }
+  .q-feedback.nope { background: var(--red-light); color: var(--red-dark); }
+
+  .quiz-result { background: linear-gradient(135deg, #1A5276, #2471A3); border-radius: 16px; padding: 30px; text-align: center; color: #fff; margin-top: 20px; display: none; }
+  .quiz-result.show { display: block; }
+  .result-emoji { font-size: 60px; margin-bottom: 12px; }
+  .result-title { font-family: 'Fredoka One', cursive; font-size: 28px; color: #FFD700; margin-bottom: 8px; }
+  .result-score { font-size: 48px; font-family: 'Fredoka One', cursive; color: #FFD700; }
+  .result-msg { font-size: 15px; opacity: 0.9; margin-top: 10px; }
+  .retry-btn { margin-top: 18px; background: #FFD700; color: #1A5276; border: none; padding: 12px 30px; border-radius: 25px; font-family: 'Fredoka One', cursive; font-size: 18px; cursor: pointer; transition: transform 0.15s; }
+  .retry-btn:hover { transform: scale(1.05); }
+
+
+  /* ===== DAFTAR PUSTAKA ===== */
+  .pustaka-page { max-width: 750px; margin: 0 auto; padding: 30px 20px; }
+  .pustaka-title { font-family: 'Fredoka One', cursive; font-size: 28px; color: var(--red-dark); margin-bottom: 5px; }
+  .pustaka-sub { font-size: 13px; color: var(--text-mid); margin-bottom: 20px; }
+  .ref-item { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 14px; line-height: 1.7; color: var(--text-dark); display: flex; gap: 12px; }
+  .ref-num { background: var(--red); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+  .ref-text em { font-style: italic; color: var(--blue); }
+  .kd-tabel { background: #fff; border-radius: 12px; border: 1.5px solid var(--border); overflow: hidden; margin: 20px 0; }
+  .kd-tabel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .kd-tabel th { background: var(--red); color: #fff; padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kd-tabel td { padding: 10px 14px; border-top: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .kd-tabel tr:nth-child(even) td { background: var(--cream); }
+
+  /* PROFILE BOX */
+  .profile-box { background: #fff; border-radius: 14px; border: 1.5px solid var(--border); padding: 18px; display: flex; gap: 20px; align-items: flex-start; margin: 16px 0; box-shadow: 0 2px 10px var(--shadow); }
+  .profile-icon { font-size: 48px; flex-shrink: 0; }
+  .profile-info h4 { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--red-dark); margin-bottom: 6px; }
+  .profile-info p { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
+
+  /* KATA PENGANTAR */
+  .kp-page { max-width: 700px; margin: 0 auto; padding: 30px 20px; }
+  .petunjuk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 20px 0; }
+  .petunjuk-item { background: #fff; border-radius: 12px; border: 1.5px solid var(--border); padding: 16px; text-align: center; }
+  .petunjuk-item .pi-icon { font-size: 30px; margin-bottom: 8px; }
+  .petunjuk-item .pi-label { font-weight: 800; font-size: 13px; color: var(--text-dark); margin-bottom: 4px; }
+  .petunjuk-item .pi-desc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+  .kompetensi-box { background: linear-gradient(135deg, var(--red-light), #fff); border: 2px solid var(--red); border-radius: 14px; padding: 18px; margin: 16px 0; }
+  .kompetensi-box h4 { font-family: 'Fredoka One', cursive; color: var(--red-dark); font-size: 17px; margin-bottom: 12px; }
+
+  /* SECTION DIVIDER */
+  .section-div { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .section-div .sd-line { flex: 1; height: 1px; background: var(--border); }
+  .section-div .sd-icon { font-size: 16px; }
+
+  /* HIGHLIGHT */
+  .highlight-num { display: inline-flex; gap: 20px; flex-wrap: wrap; margin: 16px 0; }
+  .hn-item { background: var(--red-light); border-radius: 12px; padding: 14px 20px; text-align: center; min-width: 100px; flex: 1 1 100px; }
+  .hn-item .hn-num { font-family: 'Fredoka One', cursive; font-size: 30px; color: var(--red-dark); }
+  .hn-item .hn-label { font-size: 12px; color: var(--text-mid); font-weight: 700; }
+
+  .tag { display: inline-block; background: var(--gold-mid); color: #7D6608; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tag.green { background: var(--green-light); color: var(--green-dark); }
+  .tag.blue { background: var(--blue-light); color: var(--blue); }
+  .tag.red { background: var(--red-light); color: var(--red-dark); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .cover-title { font-size: 36px; }
+    .pakaian-grid { grid-template-columns: 1fr; }
+    .options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <span class="nav-title">🏮 San Keuw Jong</span>
+  <div class="nav-btns">
+    <button class="toc-btn" onclick="showPage(1)">Daftar Isi</button>
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>&#8592; Sebelumnya</button>
+    <span class="page-indicator" id="pageIndicator">1 / 13</span>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Selanjutnya &#8594;</button>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 0: COVER ==================== -->
+<div class="page active" id="page-0">
+  <div class="cover">
+    <div class="cover-lanterns">
+      <div class="lantern">🏮</div>
+      <div class="lantern">🏮</div>
+      <div class="lantern">🏮</div>
+    </div>
+    <div class="cover-badge">E-Modul</div>
+    <div class="cover-title">San Keuw Jong<br>Kota Seribu Kelenteng</div>
+    <div class="cover-subtitle">Mengenal Kota Singkawang</div>
+    <div class="cover-info">Media Pembelajaran Berbasis Kearifan Lokal &amp; Teknologi</div>
+    <div class="cover-deco">
+      <div class="cover-deco-line"></div>
+      <div class="cover-deco-star">✦</div>
+      <div class="cover-deco-line"></div>
+    </div>
+    <div class="cover-mapel">
+      <div class="mapel-label">Mata Pelajaran</div>
+      <div class="mapel-val">IPAS</div>
+    </div>
+    <button class="start-btn" onclick="changePage(1)">Mulai Membaca ✦</button>
+
+    <div style="text-align: center; color: #ffffff; font-size: 14px; margin-top: 30px; font-weight: bold; opacity: 0.9;">
+        Created by: Sebastian Gerrardo (F1081231035)
+  </div>
+
+</div>
+</div>
+
+<!-- ==================== HALAMAN 1: DAFTAR ISI ==================== -->
+<div class="page" id="page-1">
+  <div class="toc-page">
+    <div class="toc-header">Daftar Isi</div>
+    <div class="toc-sub">Klik salah satu bab untuk langsung membukanya</div>
+    <ul class="toc-list">
+      <li class="toc-item" onclick="goToPage(2)">
+        <div class="toc-icon">📖</div>
+        <div class="toc-info"><div class="toc-num">Pendahuluan</div><div class="toc-name">Kata Pengantar &amp; Petunjuk</div><div class="toc-desc">Cara menggunakan e-modul ini dan kompetensi dasar</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(3)">
+        <div class="toc-icon">🗺️</div>
+        <div class="toc-info"><div class="toc-num">Bab 1</div><div class="toc-name">Mengenal Singkawang</div><div class="toc-desc">Letak, sejarah, dan keunikan Kota Seribu Kelenteng</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(4)">
+        <div class="toc-icon">🏮</div>
+        <div class="toc-info"><div class="toc-num">Bab 2</div><div class="toc-name">Festival Cap Go Meh &amp; Tatung</div><div class="toc-desc">Perayaan terbesar di Asia Tenggara dari Singkawang</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(5)">
+        <div class="toc-icon">🏺</div>
+        <div class="toc-info"><div class="toc-num">Bab 3</div><div class="toc-name">Kerajinan Keramik Singkawang</div><div class="toc-desc">Warisan kerajinan yang mendunia dari Sijangkung</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(6)">
+        <div class="toc-icon">🍜</div>
+        <div class="toc-info"><div class="toc-num">Bab 4</div><div class="toc-name">Kuliner Khas Singkawang</div><div class="toc-desc">Cita rasa unik perpaduan tiga budaya</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(7)">
+        <div class="toc-icon">👘</div>
+        <div class="toc-info"><div class="toc-num">Bab 5</div><div class="toc-name">Pakaian Adat &amp; Nilai Budaya</div><div class="toc-desc">Ragam busana adat Tionghoa, Melayu, dan Dayak</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(8)">
+        <div class="toc-icon">🎯</div>
+        <div class="toc-info"><div class="toc-num">Bab 6</div><div class="toc-name">Kuis Interaktif</div><div class="toc-desc">Uji pengetahuanmu tentang budaya Singkawang!</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+      <li class="toc-item" onclick="goToPage(9)">
+        <div class="toc-icon">📚</div>
+        <div class="toc-info"><div class="toc-num">Lampiran</div><div class="toc-name">Daftar Pustaka</div><div class="toc-desc">Sumber-sumber yang digunakan</div></div>
+        <div class="toc-arrow">›</div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 2: KATA PENGANTAR ==================== -->
+<div class="page" id="page-2">
+  <div class="kp-page">
+    <div class="chapter-header">
+      <div class="chapter-number" style="background:var(--blue)">📖</div>
+      <div class="chapter-info">
+        <div class="label">Pendahuluan</div>
+        <h2>Kata Pengantar &amp; Petunjuk Penggunaan</h2>
+      </div>
+    </div>
+
+    <div class="kompetensi-box">
+      <h4>Capaian Pembelajaran (CP)</h4>
+      <div class="kd-tabel">
+        <table>
+          <tr></td></strong></td><td>Menjelaskan bentuk dan fungsi pancaindra; menganalisis siklus hidup makhluk hidup dan upaya pelestariannya; menghasilkan solusi untuk masalah yang berkaitan dengan pelestarian sumber daya alam sebagai upaya mitigasi perubahan iklim; menyimpulkan proses perubahan wujud zat; menjelaskan sumber dan bentuk energi, serta proses perubahan bentuk energi dalam kehidupan sehari-hari; membedakan jenis gaya dan pengaruhnya terhadap arah, gerak, dan bentuk benda; menjelaskan peran, tugas, dan tanggung jawab serta interaksi sosial yang terjadi di sekitar tempat tinggal dan sekolah; mengenali letak kabupaten/kota dan provinsi tempat tinggalnya dengan menggunakan peta konvensional/digital; mengklasifikasikan ragam bentang alam dan keterkaitannya dengan profesi masyarakat, ragam budaya serta upaya untuk melestarikannya; menganalisis sejarah masyarakat di lingkungan tempat tinggal; menjelaskan nilai mata uang dan fungsinya, serta cara mengelola keuangan secara bijak.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Halo, Sahabat Budaya! 👋</p>
+      <p>Selamat datang di <strong>E-Modul San Keuw Jong</strong>. Media digital ini dirancang khusus untuk membantu kamu memahami budaya khas yang ada di Kota Singkawang, Kalimantan Barat.</p>
+      <p>Di dalam e-modul ini, kamu akan menjelajahi <strong>festival budaya yang mendunia</strong>, <strong>kerajinan tangan khas</strong>, <strong>kuliner lezat</strong>, hingga <strong>pakaian adat</strong> dari tiga etnis utama yang hidup berdampingan di Singkawang.</p>
+    </div>
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive; font-size:18px; color:var(--red-dark); margin-bottom:14px;">Petunjuk Penggunaan E-Modul</div>
+
+    <div class="petunjuk-grid">
+      <div class="petunjuk-item">
+        <div class="pi-icon">📖</div>
+        <div class="pi-label">Baca Berurutan</div>
+        <div class="pi-desc">Baca tiap bab secara berurutan agar pemahaman lebih lengkap</div>
+      </div>
+      <div class="petunjuk-item">
+        <div class="pi-icon">📝</div>
+        <div class="pi-label">Catat Hal Penting</div>
+        <div class="pi-desc">Siapkan buku catatan untuk menuliskan hal-hal menarik yang kamu temukan</div>
+      </div>
+      <div class="petunjuk-item">
+        <div class="pi-icon">🎯</div>
+        <div class="pi-label">Kerjakan Kuis</div>
+        <div class="pi-desc">Setelah selesai membaca, uji pemahamanmu di Bab 6 Kuis Interaktif</div>
+      </div>
+    </div>
+
+    <div class="fact-box">
+      <div class="box-title">💡 Tujuan Pembelajaran</div>
+      <p>Setelah membaca e-modul ini, kamu diharapkan dapat: (1) menyebutkan keragaman budaya di Singkawang, (2) memahami nilai-nilai kearifan lokal, dan (3) menumbuhkan rasa bangga terhadap budaya daerah.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 3: BAB 1 ==================== -->
+<div class="page" id="page-3">
+  <div class="content-page">
+    <div class="chapter-header">
+      <div class="chapter-number">1</div>
+      <div class="chapter-info">
+        <div class="label">Bab Satu</div>
+        <h2>Mengenal Kota Singkawang</h2>
+        <div class="tagline">Kota Seribu Kelenteng di Kalimantan Barat</div>
+      </div>
+    </div>
+
+    <div class="tag">Geografi &amp; Sejarah</div>
+
+    <div class="prose">
+      <p><strong>Singkawang</strong> adalah sebuah kota yang terletak di Provinsi <strong>Kalimantan Barat</strong>, Indonesia. Kota ini berbatasan langsung dengan <strong>Laut Natuna Utara</strong> di sebelah barat dan dikelilingi perbukitan hijau yang indah di sebelah timur.</p>
+      <p>Nama "Singkawang" dipercaya berasal dari kata dalam bahasa Hakka (salah satu dialek Tionghoa) yaitu <strong>"San Keuw Jong"</strong> yang berarti "kota di kaki gunung dekat laut dan sungai" menggambarkan letak geografisnya yang unik.</p>
+    </div>
+
+    <div class="photo-row">
+      <div class="photo-placeholder">
+        <div style="position:relative; width:100%; padding-top:56.25%; border-radius:12px; overflow:hidden;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d259972.24175381323!2d108.79758255758351!3d0.8835074453060062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31e3720d0a05a367%3A0xf875a197e86af568!2sSingkawang%2C%20Kota%20Singkawang%2C%20Kalimantan%20Barat!5e1!3m2!1sid!2sid!4v1778389912803!5m2!1sid!2sid" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-num">
+      <div class="hn-item"><div class="hn-num">504</div><div class="hn-label">km² Luas Wilayah</div></div>
+      <div class="hn-item"><div class="hn-num">248rb</div><div class="hn-label">Jiwa Penduduk</div></div>
+      <div class="hn-item"><div class="hn-num">3</div><div class="hn-label">Etnis Utama</div></div>
+    </div>
+
+    <div class="info-box">
+      <div class="box-title">🏛️ Julukan Kota Singkawang</div>
+      <p>Singkawang mendapat julukan <strong>"Kota Seribu Kelenteng"</strong> karena banyaknya kelenteng (vihara Tionghoa) yang tersebar di seluruh penjuru kota. Selain itu, Singkawang juga disebut <strong>"Kota Amoi"</strong> karena terkenal dengan warganya yang ramah dan cantik.</p>
+    </div>
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--red-dark);margin-bottom:14px;">Tiga Etnis Utama Singkawang</div>
+
+    <p style="font-size:14px;color:var(--text-mid);margin-bottom:16px;">Singkawang dikenal dengan keharmonisan <strong>"Tri Etnis"</strong> atau lebih dikenal <strong>"TIDAYU"</strong> — tiga kelompok etnis yang hidup berdampingan secara damai:</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🧧</div>
+        <div class="card-title" style="color:var(--red)">Tionghoa</div>
+        <div class="card-text">Etnis terbesar di Singkawang. Mayoritas keturunan imigran dari daratan Tiongkok yang datang pada abad ke-18. Membawa tradisi Cap Go Meh, kerajinan keramik, dan kuliner khas.</div>
+      </div>
+      <div class="card gold">
+        <img src="https://i.ibb.co.com/SXpBTYT0/talawang-dayak-borneo-png.webp" style="width: 50px; height: 50px;">
+        <div class="card-title" style="color:var(--orange)">Dayak</div>
+        <div class="card-text">Suku pribumi Kalimantan yang kaya akan tradisi. Dikenal dengan kerajinan anyaman, tarian adat, pakaian berbahan kulit kayu, dan nilai kearifan terhadap alam.</div>
+      </div>
+      <div class="card green">
+        <img src="https://i.ibb.co.com/ksvGhgHF/ketupat.png" style="width: 50px; height: 50px;">
+        <div class="card-title" style="color:var(--green)">Melayu</div>
+        <div class="card-text">Penduduk asli yang telah lama menetap di wilayah ini. Membawa tradisi Islam, bahasa Melayu Sambas, kuliner seperti bubur pedas, dan pakaian baju kurung.</div>
+      </div>
+    </div>
+
+    <div class="green-box">
+      <div class="box-title">🌟 Nilai Keberagaman</div>
+      <p>Ketiga etnis ini hidup secara <strong>rukun dan harmonis</strong>, merayakan budaya masing-masing namun juga saling menghormati dan gotong royong. Inilah yang membuat Singkawang menjadi contoh indah <strong>Bhinneka Tunggal Ika</strong> dalam kehidupan nyata.</p>
+    </div>
+
+    <div class="fact-box">
+      <div class="box-title">💡 Tahukah Kamu?</div>
+      <p>Singkawang adalah salah satu kota dengan jumlah kelenteng terbanyak! Kelenteng-kelenteng ini bukan hanya tempat ibadah, tetapi juga pusat kebudayaan dan sosial masyarakat Tionghoa setempat.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 4: BAB 2 CAP GO MEH ==================== -->
+<div class="page" id="page-4">
+  <div class="content-page">
+    <div class="chapter-header">
+      <div class="chapter-number">2</div>
+      <div class="chapter-info">
+        <div class="label">Bab Dua</div>
+        <h2>Festival Cap Go Meh &amp; Tatung</h2>
+        <div class="tagline">Perayaan Terbesar di Asia Tenggara</div>
+      </div>
+    </div>
+
+    <div class="tag">Festival Budaya</div>
+
+    <div class="prose">
+      <p>Setiap tahun, Kota Singkawang menjadi pusat perhatian dunia ketika merayakan <strong>Festival Cap Go Meh</strong>, sebuah perayaan yang megah dan penuh warna yang menarik wisatawan dari seluruh Indonesia bahkan mancanegara.</p>
+    </div>
+
+    <div class="info-box">
+      <div class="box-title">📖 Asal Usul Nama Cap Go Meh</div>
+      <p><strong>"Cap Go Meh"</strong> berasal dari bahasa Hokkian. <em>Cap</em> artinya sepuluh, <em>Go</em> artinya lima, dan <em>Meh</em> artinya malam. Jadi, Cap Go Meh berarti <strong>"Malam Kelima Belas"</strong> yang dirayakan pada malam ke-15 setelah Tahun Baru Imlek, menandai berakhirnya rangkaian perayaan Imlek.</p>
+    </div>
+
+    <div class="photo-row">
+      <div class="photo-placeholder">
+        <div style="font-weight: bold; font-size: 14px; color: #333; margin-bottom: 10px; text-align: left;">
+            🎥 Video Dokumenter Pawai Cap Go Meh
+        </div>
+
+        <div style="flex-grow: 1; position: relative; width: 100%; min-height: 180px; overflow: hidden; border-radius: 8px; background: #000;">
+            <iframe 
+                src="https://www.youtube.com/embed/atvEuUHzVUg?si=l49dEBjgtjZD60-P" 
+                title="YouTube video player" 
+                frameborder="0" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+      </div>
+
+      </div>
+      <div class="photo-placeholder" style="padding: 15px; position: relative; min-height: 260px; display: flex; flex-direction: column; box-sizing: border-box;">
+        
+        <div style="font-weight: bold; font-size: 14px; color: #333; margin-bottom: 10px; text-align: left; width: 100%;">
+            🐲 Atraksi Barongsai &amp; Naga Singkawang
+        </div>
+
+        <div style="flex-grow: 1; position: relative; width: 100%; min-height: 160px; overflow: hidden; border-radius: 8px; background: #000; display: flex; align-items: center; justify-content: center;">
+             <iframe 
+                src="https://www.youtube.com/embed/j2RgL1Jsm4w?si=55tlhlr-1zU_mSIw" 
+                title="YouTube video player" 
+                frameborder="0" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--red-dark);margin-bottom:14px;">Tradisi Tatung — Ritual Unik Singkawang</div>
+
+    <div class="prose">
+      <p><strong>Tatung</strong> adalah ritual paling khas dan unik yang hanya ada di Singkawang. Dalam ritual ini, seorang pria atau wanita yang disebut tatung diyakini telah "dimasuki" oleh roh leluhur atau dewa. Mereka melakukan aksi-aksi luar biasa seperti ditusuk benda tajam, berjalan di atas bara api, atau melukai diri sendiri, namun ajaibnya tidak terluka sama sekali.</p>
+      <p>Masyarakat percaya bahwa tatung memiliki kekuatan untuk <strong>mengusir roh jahat</strong>, memberikan <strong>berkah dan keselamatan</strong>, serta menjaga keharmonisan kampung halaman.</p>
+    </div>
+
+    <div class="profile-box">
+      <div class="profile-icon">🧿</div>
+      <div class="profile-info">
+        <h4>Makna Spiritual Tatung</h4>
+        <p>Tradisi tatung bukan sekadar pertunjukan, ini adalah ritual sakral yang mengandung nilai spiritual mendalam. Tatung dipandang sebagai perantara antara dunia manusia dan dunia roh. Sebelum ritual, tatung biasanya berpuasa dan melakukan meditasi selama beberapa hari.</p>
+      </div>
+    </div>
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--red-dark);margin-bottom:14px;">Rangkaian Kegiatan Festival</div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🐉</div>
+        <div class="card-title">Barongsai &amp; Naga</div>
+        <div class="card-text">Tarian singa (barongsai) dan naga yang diiringi tabuhan gong dan genderang. Dipercaya membawa keberuntungan dan mengusir hal-hal buruk.</div>
+      </div>
+      <div class="card blue">
+        <img src="https://i.ibb.co.com/Jj5rRgt2/lampion.png" style="width: 50px; height: 50px;">
+        <div class="card-title">Pawai Lampion</div>
+        <div class="card-text">Ribuan lampion warna-warni dinyalakan sepanjang jalan kota, menciptakan pemandangan yang sangat indah dan magis di malam hari.</div>
+      </div>
+      <div class="card gold">
+        <div class="card-icon">🎆</div>
+        <div class="card-title">Kembang Api</div>
+        <div class="card-text">Pesta kembang api spektakuler yang mewarnai langit Singkawang, menjadi penutup yang meriah dari seluruh rangkaian perayaan.</div>
+      </div>
+      <div class="card green">
+        <div class="card-icon">🛍️</div>
+        <div class="card-title">Pasar Budaya</div>
+        <div class="card-text">Bazar kuliner dan kerajinan yang menjual berbagai produk khas Singkawang, tempat wisatawan berbelanja oleh-oleh dan mencicipi makanan lokal.</div>
+      </div>
+    </div>
+
+    <div class="fact-box">
+      <div class="box-title">🌟 Rekor Kebanggaan</div>
+      <p>Festival Cap Go Meh Singkawang diakui sebagai salah satu perayaan Cap Go Meh <strong>terbesar dan termegah di Asia Tenggara</strong>. Setiap tahun, ratusan tatung dari berbagai daerah di Kalimantan Barat berkumpul untuk berpartisipasi dalam pawai akbar ini. Festival ini juga telah mendapat pengakuan dari <strong>Kementerian Pariwisata RI</strong> sebagai salah satu event wisata unggulan nasional.</p>
+    </div>
+
+    <div class="green-box">
+      <div class="box-title">🤝 Nilai Toleransi</div>
+      <p>Menariknya, festival Cap Go Meh bukan hanya dirayakan oleh etnis Tionghoa. Warga Melayu dan Dayak pun turut berpartisipasi dan menjadi penonton setia. Ini adalah bukti nyata bahwa <strong>perbedaan budaya justru memperkaya kehidupan</strong> masyarakat Singkawang.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 5: BAB 3 KERAMIK ==================== -->
+<div class="page" id="page-5">
+  <div class="content-page">
+    <div class="chapter-header">
+      <div class="chapter-number">3</div>
+      <div class="chapter-info">
+        <div class="label">Bab Tiga</div>
+        <h2>Kerajinan Keramik Singkawang</h2>
+        <div class="tagline">Warisan Tangan dari Sakok</div>
+      </div>
+    </div>
+
+    <div class="tag">Kerajinan Lokal</div>
+
+    <div class="prose">
+      <p>Jauh sebelum Indonesia merdeka, <strong>kerajinan keramik</strong> telah menjadi bagian tak terpisahkan dari kehidupan masyarakat Singkawang. Sejak <strong>abad ke-18</strong>, para pengrajin Tionghoa yang datang ke Kalimantan membawa serta keahlian membuat keramik dari tanah leluhur mereka.</p>
+      <p>Pusat kerajinan keramik terpusat di <strong>Sakok, Singkawang Selatan</strong> sebuah kawasan yang hingga kini masih aktif memproduksi keramik berkualitas tinggi yang diekspor hingga ke mancanegara.</p>
+    </div>
+
+    <div class="photo-row">
+      <div class="photo-placeholder" style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; height: 350px; box-sizing: border-box;">
+        <div style="flex-grow: 1; width: 100%; height: 280px; overflow: hidden; border-radius: 6px;">
+        <img src="https://i.ibb.co.com/hRtPN53c/Keramik-Singkawang.jpg" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+        <div class="ph-label" style="margin-top: 8px; font-weight: bold; font-size: 14px;">Keramik Sakok</div>
+      </div>
+      <div class="photo-placeholder" style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; height: 350px; box-sizing: border-box;">
+        <div style="flex-grow: 1; width: 100%; height: 280px; overflow: hidden; border-radius: 6px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+        <img src="https://i.ibb.co.com/0R0c15RK/pengrajin-keramik-skw.jpg" alt="Pengrajin Keramik Singkawang" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+        <div class="ph-label" style="margin-top: 8px; font-weight: bold; font-size: 14px;">Pengrajin Keramik Singkawang</div>
+      </div>
+    </div>
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--red-dark);margin-bottom:14px;">Proses Pembuatan Keramik</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Pemilihan Tanah Liat</div>
+          <p>Tanah liat berkualitas tinggi dipilih dengan teliti. Tanah liat khusus yang digunakan di Singkawang berasal dari daerah sekitar kota, kaya mineral sehingga menghasilkan keramik yang kuat dan indah.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Pengolahan &amp; Pembentukan</div>
+          <p>Tanah liat diolah hingga kalis dan elastis, lalu dibentuk menggunakan tangan atau alat putar (pottery wheel) sesuai desain yang diinginkan misalnya tempayan, vas, piring, mangkuk, atau ornamen hias.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Penjemuran</div>
+          <p>Keramik yang sudah dibentuk dijemur di bawah sinar matahari selama 1–3 hari hingga setengah kering, agar tidak retak saat dibakar.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Pengecatan &amp; Pengglasiran</div>
+          <p>Motif khas seperti <strong>naga, bunga teratai, burung phoenix</strong>, dan pemandangan alam dilukiskan dengan teliti oleh seniman. Kemudian dilapisi glasir (cairan khusus) agar mengkilap dan tahan lama.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Pembakaran di Tungku</div>
+          <p>Keramik dibakar dalam tungku besar pada suhu 1.200–1.300°C selama berjam-jam. Proses pembakaran ini mengubah tanah liat menjadi keramik yang keras, padat, dan mengkilap.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Finishing &amp; Pengemasan</div>
+          <p>Setelah dingin, keramik diperiksa kualitasnya, dibersihkan, dan dikemas untuk dijual, baik untuk pasar lokal maupun ekspor ke Malaysia, Singapura, Belanda, dan negara lainnya.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--red-dark);margin-bottom:14px;">Jenis-Jenis Produk Keramik</div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🏺</div>
+        <div class="card-title">Tempayan &amp; Vas</div>
+        <div class="card-text">Tempayan besar bermotif naga dan bunga menjadi produk paling ikonik dari Singkawang. Sering dijadikan cendera mata mewah dan pajangan rumah.</div>
+      </div>
+      <div class="card gold">
+        <div class="card-icon">🍽️</div>
+        <div class="card-title">Peralatan Makan</div>
+        <div class="card-text">Piring, mangkuk, cangkir dengan motif tradisional Tionghoa. Digunakan sehari-hari maupun sebagai koleksi.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-icon">🐉</div>
+        <div class="card-title">Ornamen &amp; Patung</div>
+        <div class="card-text">Patung naga, singa keramik (foo dog), dan berbagai ornamen dekoratif untuk hiasan rumah dan kelenteng.</div>
+      </div>
+    </div>
+
+    <div class="fact-box">
+      <div class="box-title">💡 Tahukah Kamu?</div>
+      <p>Keramik Singkawang telah diekspor ke lebih dari <strong>10 negara</strong>! Kualitasnya diakui karena dibuat sepenuhnya dengan tangan (handmade) oleh para pengrajin berpengalaman turun-temurun. Industri keramik ini menyerap tenaga kerja lokal dan menjadi <strong>salah satu kebanggaan ekonomi</strong> Kota Singkawang.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 6: BAB 4 KULINER ==================== -->
+<div class="page" id="page-6">
+  <div class="content-page">
+    <div class="chapter-header">
+      <div class="chapter-number">4</div>
+      <div class="chapter-info">
+        <div class="label">Bab Empat</div>
+        <h2>Kuliner Khas Singkawang</h2>
+        <div class="tagline">Daya tarik sebagai kota wisata dengan kuliner yang unik</div>
+      </div>
+    </div>
+
+    <div class="tag">Kuliner Khas</div>
+
+
+    <div class="food-grid">
+      <div class="food-card">
+        <img src="https://i.ibb.co.com/4RnRFF3Z/coipan-skw.jpg" style="width: 100%; max-width: 250px; height: auto; margin: 0 auto;">
+        <div class="food-body">
+          <div class="food-name">Chai Kue (Choipan)</div>
+          <div class="food-desc">Kue kukus tipis berisi sayuran segar seperti <strong>bengkuang, talas, atau kucai</strong>. Dibungkus kulit kenyal berwarna putih bening, disajikan panas-panas dengan saus kecap asin dan sambal. Ini adalah camilan wajib yang wajib dicoba saat berkunjung ke Singkawang!</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="https://i.ibb.co.com/SXnm3218/mie-panjang-umur.jpg" style="width: 100%; max-width: 250px; height: auto; margin: 0 auto;">
+        <div class="food-body">
+          <div class="food-name">Mie Panjang Umur</div>
+          <div class="food-desc">Mi panjang umur khas Singkawang, yang dikenal juga sebagai mi asin atau misua, adalah mi putih kering yang sangat asin. Menjadi simbol harapan untuk umur panjang dan rezeki yang tak terputus, hidangan ini wajib disajikan oleh masyarakat Tionghoa setempat saat Imlek, Cap Go Meh, dan ulang tahun.</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="https://i.ibb.co.com/tPxXd0PF/bubur-gunting-skw.jpg" style="width: 100%; max-width: 250px; height: auto; margin: 0 auto;">
+        <div class="food-body">
+          <div class="food-name">Bubur Gunting</div>
+          <div class="food-desc">hidangan unik berupa potongan cakwe renyah yang disiram dengan kuah kental manis berisi kacang hijau kupas.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="box-title">🗺️ Di Mana Menemukan Kuliner Khas Singkawang?</div>
+      <p>Kuliner khas Singkawang dapat ditemukan di <strong>Pasar Hongkong Singkawang</strong>, <strong>Jalan Diponegoro</strong>, dan berbagai kedai kecil di seluruh kota. Saat Festival Cap Go Meh, semua kuliner ini tersedia di <strong>pasar malam</strong> yang digelar di pusat kota.</p>
+    </div>
+
+    <div class="fact-box">
+      <div class="box-title">💡 Nilai Budaya di Balik Kuliner</div>
+      <p>Setiap makanan khas Singkawang memiliki <strong>makna budaya</strong> di baliknya. Chai kue mencerminkan kearifan memanfaatkan hasil bumi lokal. Kuliner adalah cara leluhur <strong>mewariskan nilai kehidupan</strong> kepada generasi berikutnya.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 7: BAB 5 PAKAIAN ADAT ==================== -->
+<div class="page" id="page-7">
+  <div class="content-page">
+    <div class="chapter-header">
+      <div class="chapter-number">5</div>
+      <div class="chapter-info">
+        <div class="label">Bab Lima</div>
+        <h2>Pakaian Adat &amp; Nilai Budaya</h2>
+        <div class="tagline">Identitas Tiga Etnis dalam Busana</div>
+      </div>
+    </div>
+
+    <div class="tag">Busana Adat</div>
+
+    <div class="prose">
+      <p>Pakaian adat adalah salah satu cara paling jelas untuk mengenali identitas suatu budaya. Di Singkawang, tiga etnis utama memiliki pakaian adat yang berbeda-beda namun sama-sama memiliki nilai estetika dan makna yang mendalam.</p>
+    </div>
+
+    <div class="pakaian-grid">
+      <div class="pakaian-card pk1">
+        <img src="https://i.ibb.co.com/G4zwQj9V/baju-adat-tionghoa.png" style="width: 100%; max-width: 330px; height: auto; margin: 0 auto;">
+        <div class="pakaian-body">
+          <div class="pakaian-etnis">Tionghoa</div>
+          <div class="pakaian-detail"><strong>Qipao/Cheongsam</strong> untuk perempuan dan <strong>Changshan</strong> untuk laki-laki. Berwarna merah cerah bermotif bunga peony, naga, dan burung phoenix — melambangkan keberuntungan, keberanian, dan keindahan.</div>
+        </div>
+      </div>
+      <div class="pakaian-card pk2">
+        <img src="https://i.ibb.co.com/Cp5tFpcP/baju-adat-dayak.jpg" style="width: 100%; max-width: 250px; height: auto; margin: 0 auto;">
+        <div class="pakaian-body">
+          <div class="pakaian-etnis">Dayak</div>
+          <div class="pakaian-detail"><strong>Rompi dan rok</strong> berbahan kain tenun motif geometris khas, dihiasi manik-manik warna-warni dan bulu burung Enggang — burung suci bagi suku Dayak. Dikenakan saat upacara adat dan festival.</div>
+        </div>
+      </div>
+      <div class="pakaian-card pk3">
+        <img src="https://i.ibb.co.com/S4pwGZ7s/bajukurungtelukbelanga.jpg" style="width: 100%; max-width: 250px; height: auto; margin: 0 auto;">
+        <div class="pakaian-body">
+          <div class="pakaian-etnis">Melayu</div>
+          <div class="pakaian-detail"><strong>Baju Kurung</strong> untuk perempuan dan <strong>Teluk Belanga</strong> untuk laki-laki. Biasanya berwarna kuning, hijau, atau biru. Dikenakan saat hari raya, pernikahan, dan upacara adat.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="section-div"><div class="sd-line"></div><div class="sd-icon">✦</div><div class="sd-line"></div></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--red-dark);margin-bottom:14px;">Nilai Kearifan Lokal: Gotong Royong</div>
+
+    <div class="prose">
+      <p>Salah satu nilai kearifan lokal yang paling kuat di Singkawang adalah <strong>semangat gotong royong</strong>. Meski terdiri dari tiga etnis dengan latar belakang berbeda, masyarakat Singkawang selalu bekerja sama dalam berbagai kegiatan kemasyarakatan.</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🏮</div>
+        <div class="card-title">Persiapan Festival</div>
+        <div class="card-text">Semua warga, dari etnis Tionghoa, Melayu, maupun Dayak, bersama-sama mempersiapkan dekorasi, keamanan, dan logistik Festival Cap Go Meh tanpa memandang perbedaan.</div>
+      </div>
+      <div class="card green">
+        <div class="card-icon">🕌 ⛪ ⛩️</div>
+        <div class="card-title">Toleransi Beragama</div>
+        <div class="card-text">Perayaan satu etnis dihadiri dan didukung oleh etnis lain. Warga Muslim ikut menjaga keamanan saat festival Imlek, begitu pula sebaliknya saat Idul Fitri.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-icon">🤝</div>
+        <div class="card-title">Musyawarah Bersama</div>
+        <div class="card-text">Pengambilan keputusan di tingkat RT/RW selalu melibatkan semua warga dari berbagai etnis secara setara, mencerminkan nilai demokrasi yang sejati.</div>
+      </div>
+    </div>
+
+    <div class="green-box">
+      <div class="box-title">🌟 Pesan Moral untuk Kita</div>
+      <p>Singkawang mengajarkan kita bahwa <strong>perbedaan adalah kekuatan</strong>, bukan kelemahan. Ketika Tionghoa, Dayak, dan Melayu bersatu, tercipta kebudayaan yang jauh lebih kaya dan indah dibandingkan jika masing-masing berdiri sendiri. <em>Inilah makna sejati Bhinneka Tunggal Ika.</em></p>
+    </div>
+
+    <div class="fact-box">
+      <div class="box-title">💡 Fakta Menarik</div>
+      <p>Di Singkawang, tidak jarang kita menemukan warga Melayu yang fasih berbahasa Hakka (Tionghoa) atau warga Tionghoa yang mahir memasak masakan Melayu. Ini adalah bukti nyata bahwa <strong>pergaulan budaya yang intens</strong> selama ratusan tahun telah menciptakan ikatan sosial yang sangat erat antar etnis.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 8: KUIS ==================== -->
+<div class="page" id="page-8">
+  <div class="quiz-container">
+    <div class="quiz-intro">
+      <h3>🎯 Kuis Budaya Singkawang</h3>
+      <p>Sudah siap menguji pengetahuanmu? Jawab 10 pertanyaan berikut!</p>
+      <div class="quiz-score-bar">
+        <div class="score-box"><div class="s-label">Skor</div><div class="s-val" id="scoreDisplay">0</div></div>
+        <div class="score-box"><div class="s-label">Dijawab</div><div class="s-val" id="answeredDisplay">0/10</div></div>
+      </div>
+    </div>
+
+    <div id="quizQuestions"></div>
+
+    <div class="quiz-result" id="quizResult">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-title">Hasil Kuis Kamu</div>
+      <div class="result-score" id="finalScore">0/10</div>
+      <div class="result-msg" id="resultMsg"></div>
+      <button class="retry-btn" onclick="resetQuiz()">Coba Lagi 🔄</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HALAMAN 9: DAFTAR PUSTAKA ==================== -->
+<div class="page" id="page-9">
+  <div class="pustaka-page">
+    <div class="chapter-header">
+      <div class="chapter-number" style="background:var(--blue);font-size:20px;">📚</div>
+      <div class="chapter-info">
+        <div class="label">Referensi Ilmiah</div>
+        <h2>Daftar Pustaka</h2>
+        <div class="tagline">Sumber-sumber yang digunakan dalam penyusunan e-modul ini</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--text-mid);margin-bottom:20px;">Berikut adalah daftar pustaka yang digunakan sebagai dasar penyusunan materi dalam e-modul ini. Siswa dan guru dapat membaca sumber-sumber ini untuk memperdalam pemahaman.</p>
+
+    <div class="ref-item"><div class="ref-num">1</div><div class="ref-text">Badan Pusat Statistik Kota Singkawang. (2023). <em>Kota Singkawang dalam Angka 2023.</em> Singkawang: BPS Kota Singkawang.</div></div>
+    <div class="ref-item"><div class="ref-num">2</div><div class="ref-text">Dinas Pariwisata dan Kebudayaan Kota Singkawang. (2022). <em>Profil Pariwisata dan Budaya Kota Singkawang.</em> Singkawang: Pemerintah Kota Singkawang.</div></div>
+    <div class="ref-item"><div class="ref-num">3</div><div class="ref-text">Effendy, T. (2012). <em>Tunjuk Ajar Melayu: Butir-Butir Budaya Melayu Riau.</em> Pekanbaru: Tenas Effendy Foundation.</div></div>
+    <div class="ref-item"><div class="ref-num">4</div><div class="ref-text">Kementerian Pendidikan dan Kebudayaan RI. (2017). <em>Buku Siswa IPS Kelas 4 SD: Tema 1 Keberagaman Budaya Bangsaku.</em> Jakarta: Kemendikbud.</div></div>
+    <div class="ref-item"><div class="ref-num">5</div><div class="ref-text">Nawiyanto, S., &amp; Purnawati, E. (2015). <em>Budaya dan Kearifan Lokal Masyarakat Kalimantan Barat.</em> Jember: Universitas Jember Press.</div></div>
+    <div class="ref-item"><div class="ref-num">6</div><div class="ref-text">Pemerintah Kota Singkawang. (2024). <em>Portal Resmi Kota Singkawang.</em> Diakses dari https://www.singkawangkota.go.id</div></div>
+    <div class="ref-item"><div class="ref-num">7</div><div class="ref-text">Supriadi, D. (2019). Kerajinan Keramik Singkawang sebagai Warisan Budaya Lokal. <em>Jurnal Kebudayaan Nusantara, 7</em>(2), 45–58.</div></div>
+    <div class="ref-item"><div class="ref-num">8</div><div class="ref-text">Yudha, P. A. (2018). Tradisi Tatung dalam Perayaan Cap Go Meh di Kota Singkawang. <em>Jurnal Antropologi Indonesia, 39</em>(2), 87–95.</div></div>
+    <div class="ref-item"><div class="ref-num">9</div><div class="ref-text">Wikipedia Bahasa Indonesia. (2024). <em>Kota Singkawang.</em> Diakses dari https://id.wikipedia.org/wiki/Kota_Singkawang</div></div>
+    <div class="ref-item"><div class="ref-num">10</div><div class="ref-text">Zulkifli, A. (2020). Multikulturalisme Singkawang: Harmoni Tiga Etnis dalam Satu Kota. <em>Jurnal Pendidikan IPS Indonesia, 4</em>(1), 12–24.</div></div>
+
+    <div class="info-box" style="margin-top:24px;">
+      <div class="box-title">📌 Catatan Penggunaan</div>
+      <p>E-modul ini dirancang sebagai media pembelajaran berbasis kearifan lokal untuk siswa SD Kelas 4 di Kota Singkawang dan sekitarnya. Guru diperbolehkan menggunakan dan memodifikasi konten ini untuk keperluan pembelajaran dengan tetap mencantumkan sumber.</p>
+    </div>
+
+    <div style="text-align:center;margin-top:30px;padding:20px;background:linear-gradient(135deg,var(--red-dark),var(--red));border-radius:16px;color:#fff;">
+      <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#FFD700;margin-bottom:8px;">🏮 Selamat Belajar! 🏮</div>
+      <p style="font-size:14px;opacity:0.9;">SINGKAWANG HEBAT!</p>
+      <p style="font-size:12px;opacity:0.7;margin-top:8px;">E-Modul Jelajah Budaya Singkawang</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= SCRIPT ============================= -->
+<script>
+const TOTAL_PAGES = 10;
+let currentPage = 0;
+let score = 0;
+let answered = 0;
+
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + n).classList.add('active');
+  currentPage = n;
+  document.getElementById('pageIndicator').textContent = (n + 1) + ' / ' + TOTAL_PAGES;
+  document.getElementById('prevBtn').disabled = (n === 0);
+  document.getElementById('nextBtn').disabled = (n === TOTAL_PAGES - 1);
+  window.scrollTo(0, 0);
+}
+
+function goToPage(n) { showPage(n); }
+
+function changePage(dir) {
+  const next = currentPage + dir;
+  if (next >= 0 && next < TOTAL_PAGES) showPage(next);
+}
+
+// ---- QUIZ DATA ----
+const questions = [
+  { q: "Singkawang terletak di provinsi....", opts: ["Kalimantan Tengah", "Kalimantan Barat", "Kalimantan Selatan", "Kalimantan Timur"], ans: 1, explain: "Singkawang adalah kota di Provinsi Kalimantan Barat, Indonesia." },
+  { q: "Apa julukan Kota Singkawang yang terkenal?", opts: ["Kota Seribu Masjid", "Kota Seribu Kelenteng", "Kota Khatulistiwa", "Kota Sejuta Bunga"], ans: 1, explain: "Singkawang dijuluki 'Kota Seribu Kelenteng' karena banyaknya kelenteng/vihara di seluruh penjuru kota." },
+  { q: "Cap Go Meh dirayakan pada hari ke berapa setelah Tahun Baru Imlek?", opts: ["Hari ke-7", "Hari ke-10", "Hari ke-15", "Hari ke-30"], ans: 2, explain: "'Cap Go Meh' dalam bahasa Hokkian berarti malam kelima belas. Dirayakan 15 hari setelah Imlek." },
+  { q: "Apa nama ritual sakral khas Singkawang saat Cap Go Meh?", opts: ["Kuda Lumping", "Tatung", "Reog", "Debus"], ans: 1, explain: "Tatung adalah ritual unik di mana seseorang diyakini dimasuki roh leluhur dan kebal terhadap benda tajam." },
+  { q: "Di mana pusat kerajinan keramik Singkawang berada?", opts: ["Sungai Raya", "Sijangkung", "Sanggau", "Sambas"], ans: 1, explain: "Sentra kerajinan keramik Singkawang terletak di Kelurahan Sijangkung, Singkawang Selatan." },
+  { q: "Kue kukus berisi bengkuang atau talas khas Singkawang disebut....", opts: ["Lemper", "Lumpia", "Chai Kue", "Klepon"], ans: 2, explain: "Chai Kue (Cai Gui) adalah kue kukus khas Tionghoa Hakka Singkawang berisi sayuran seperti bengkuang atau talas." },
+  { q: "Pakaian adat perempuan Tionghoa yang sering dikenakan saat Imlek disebut....", opts: ["Kebaya", "Qipao/Cheongsam", "Baju Kurung", "Ulos"], ans: 1, explain: "Qipao atau Cheongsam adalah pakaian tradisional perempuan Tionghoa yang berwarna cerah bermotif naga dan bunga." },
+  { q: "Kuliner khas Singkawang berupa chakwe yang dipotong-potong kemudian diberi kuah kental yang diberi kacang hijau kupas adalah....", opts: ["Ikan Bakar", "Bubur Gunting", "Bubur Sumsum", "Kepiting Masak"], ans: 1, explain: "Bubur gunting adalah kuliner Singkawang berupa potongan cakwe renyah yang disiram dengan kuah kental yang manis berisi kacang hijau kupas." },
+  { q: "Berapa etnis utama yang hidup berdampingan di Singkawang?", opts: ["2 etnis", "3 etnis", "4 etnis", "5 etnis"], ans: 1, explain: "Singkawang terkenal dengan 'Tri Etnis' yaitu Tionghoa, Melayu, dan Dayak yang hidup harmonis." },
+  { q: "Apakah bahan utama pembuatan keramik Singkawang?", opts: ["Pasir halus", "Tanah liat", "Batu kapur", "Kaolin murni"], ans: 1, explain: "Keramik Singkawang dibuat dari tanah liat berkualitas tinggi yang tersedia di wilayah sekitar kota." },
+];
+
+function buildQuiz() {
+  const container = document.getElementById('quizQuestions');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'qcard-' + i;
+    const optsHtml = q.opts.map((o, j) =>
+      `<button class="opt-btn" id="opt-${i}-${j}" onclick="answer(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`
+    ).join('');
+    card.innerHTML = `
+      <div class="q-number">Pertanyaan ${i+1} dari 10</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="fb-${i}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, selected) {
+  const q = questions[qi];
+  const card = document.getElementById('qcard-' + qi);
+  const fb = document.getElementById('fb-' + qi);
+  for (let j = 0; j < q.opts.length; j++) {
+    const btn = document.getElementById('opt-' + qi + '-' + j);
+    btn.disabled = true;
+    if (j === q.ans) btn.classList.add('correct');
+    else if (j === selected && selected !== q.ans) btn.classList.add('wrong');
+  }
+  if (selected === q.ans) {
+    score++;
+    fb.textContent = '✅ Betul! ' + q.explain;
+    fb.className = 'q-feedback show ok';
+    document.getElementById('scoreDisplay').textContent = score;
+  } else {
+    fb.textContent = '❌ Belum tepat. ' + q.explain;
+    fb.className = 'q-feedback show nope';
+  }
+  answered++;
+  document.getElementById('answeredDisplay').textContent = answered + '/10';
+  if (answered === 10) showResult();
+}
+
+function showResult() {
+  const result = document.getElementById('quizResult');
+  result.classList.add('show');
+  document.getElementById('finalScore').textContent = score + '/10';
+  let emoji, msg;
+  if (score === 10) { emoji = '🏆'; msg = 'Sempurna! Kamu adalah Duta Budaya Singkawang yang hebat!'; }
+  else if (score >= 8) { emoji = '🌟'; msg = 'Luar biasa! Kamu sudah sangat mengenal budaya Singkawang!'; }
+  else if (score >= 6) { emoji = '👍'; msg = 'Bagus! Coba baca ulang bab yang masih belum kamu kuasai ya!'; }
+  else if (score >= 4) { emoji = '📖'; msg = 'Terus belajar! Baca lagi materi di bab-bab sebelumnya, ya!'; }
+  else { emoji = '💪'; msg = 'Jangan menyerah! Baca ulang materi dan coba kembali!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultMsg').textContent = msg;
+  result.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  score = 0; answered = 0;
+  document.getElementById('scoreDisplay').textContent = '0';
+  document.getElementById('answeredDisplay').textContent = '0/10';
+  document.getElementById('quizResult').classList.remove('show');
+  buildQuiz();
+  document.getElementById('quizQuestions').scrollIntoView({ behavior: 'smooth' });
+}
+
+buildQuiz();
+showPage(0);
+</script>
+</body>
+</html>
